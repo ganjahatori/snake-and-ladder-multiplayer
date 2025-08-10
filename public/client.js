@@ -1,17 +1,41 @@
 const socket = io(window.location.origin);
 
-socket.on('playerList', (players) => {
-    console.log('Players:', players);
-    document.getElementById('game').innerHTML =
-        players.map(p => `${p.id}: ${p.position}`).join('<br>');
+let myId = null;
+let players = [];
+
+socket.on("connect", () => {
+    myId = socket.id;
+    console.log("Connected as", myId);
 });
 
-socket.on('playerMoved', ({ playerId, newPosition }) => {
-    console.log(`${playerId} moved to ${newPosition}`);
+// Initial list of players
+socket.on("init", (serverPlayers) => {
+    players = serverPlayers;
+    renderBoard();
+});
+
+// Whenever any player moves
+socket.on("updateBoard", (serverPlayers) => {
+    players = serverPlayers;
+    renderBoard();
 });
 
 function rollDice() {
     const roll = Math.floor(Math.random() * 6) + 1;
-    const player = { playerId: socket.id, newPosition: roll }; // replace with real game logic
-    socket.emit('rollDice', player);
+
+    // Find my current position
+    const me = players.find(p => p.id === myId);
+    if (!me) return;
+
+    let newPos = me.position + roll;
+
+    // Optional: Apply snakes and ladders mapping here
+    // if (snakeMap[newPos]) newPos = snakeMap[newPos];
+
+    socket.emit("playerMove", { position: newPos });
+}
+
+function renderBoard() {
+    document.getElementById('game').innerHTML =
+        players.map(p => `${p.id}: ${p.position}`).join('<br>');
 }
