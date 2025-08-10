@@ -1,36 +1,32 @@
 const express = require('express');
 const http = require('http');
-const socketIo = require('socket.io');
+const { Server } = require('socket.io');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = new Server(server, {
+  cors: {
+    origin: "*", // allow all origins
+    methods: ["GET", "POST"]
+  }
+});
 
-app.use(express.static('public'));
-
-let players = [];  // Tracks { id, position }
+app.use(express.static(path.join(__dirname, 'public'))); // adjust folder
 
 io.on('connection', (socket) => {
-  console.log('Player connected:', socket.id);
-  players.push({ id: socket.id, position: 1 });
-  io.emit('playerList', players);
+  console.log('a user connected');
+
+  socket.on('rollDice', (data) => {
+    io.emit('diceRolled', data); // send to everyone
+  });
 
   socket.on('disconnect', () => {
-    players = players.filter(p => p.id !== socket.id);
-    io.emit('playerList', players);
-  });
-
-  socket.on('rollDice', ({ playerId, newPosition }) => {
-    const player = players.find(p => p.id === playerId);
-    if (player) {
-      player.position = newPosition;
-      io.emit('playerMoved', { playerId, newPosition });
-    }
+    console.log('user disconnected');
   });
 });
 
-const PORT = process.env.PORT || 3000; // Important for Render
-server.listen(PORT, () => {
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
-
