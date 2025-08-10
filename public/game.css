@@ -1,0 +1,137 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.cont {
+  display: grid;
+  width: 600px;
+  grid-template-columns: repeat(10, 1fr);
+  margin: 0px 0 0px 0;
+}
+
+.cont div {
+  width: 60px;
+  height: 60px;
+  border: 0.2px solid black;
+}
+
+#p1, #p2, #p3, #p4, #p5, #p6, #p7 {
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  position: relative;
+  border: 3px solid black;
+  transition: all linear 0.5s;
+  background-size: cover;  /* Ensure the image fills the circle */
+}
+
+#p1 {
+  background-image: url('images/player1.png'); /* Replace with actual image path */
+  top: 0px;
+  left: -62px;
+  z-index: 7;
+}
+
+#p2 {
+  background-image: url('images/player2.png'); /* Replace with actual image path */
+  top: -55px;
+  left: -62px;
+  z-index: 6;
+}
+
+#p3 {
+  background-image: url('images/player3.png'); /* Replace with actual image path */
+  top: -110px;
+  left: -62px;
+  z-index: 5;
+}
+
+#p4 {
+  background-image: url('images/player4.png'); /* Replace with actual image path */
+  top: -165px;
+  left: -62px;
+  z-index: 4;
+}
+
+#p5 {
+  background-image: url('images/player5.png'); /* Replace with actual image path */
+  top: -220px;
+  left: -62px;
+  z-index: 3;
+}
+
+#p6 {
+  background-image: url('images/player6.png'); /* Replace with actual image path */
+  top: -275px;
+  left: -62px;
+  z-index: 2;
+}
+
+#p7 {
+  background-image: url('images/player7.png'); /* Replace with actual image path */
+  top: -330px;
+  left: -62px;
+  z-index: 1;
+}
+
+img {
+  position: relative;
+  top: -615px;
+  left: 8px;
+  margin: 0;
+  width: 615px;
+  height: 615px;
+}
+
+#diceCont {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 200px;
+  left: 120px;
+  font-size: 2rem;
+  z-index: 99;
+}
+
+#diceBtn {
+  z-index: 99;
+  padding: 5px;
+  cursor: pointer;
+  background-color: rgb(75, 140, 197);
+  border-radius: 5px;
+  width: 200px;
+}
+
+@media (max-width: 1250px) {
+  #diceCont {
+    display: flex;
+    place-items: none;
+    top: 92vh;
+    left: 36vw;
+    border: 2px solid red;
+  }
+  #diceBtn {
+    width: 200px;
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 1250px) {
+  #diceCont {
+    display: flex;
+    place-items: none;
+    top: 99vh;
+    left: 10vw;
+  }
+  #diceBtn {
+    width: 200px;
+    margin-left: 20px;
+  }
+}
